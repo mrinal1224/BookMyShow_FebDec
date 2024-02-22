@@ -1,7 +1,6 @@
 const {axiosInstance} = require('./index')
 
-
-// Register a User
+//Register new User
 
 export const RegisterUser = async (value) => {
     try{
