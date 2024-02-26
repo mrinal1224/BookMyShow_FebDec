@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {Form, Input, Button, Radio, message } from 'antd';
 import { Link, useNavigate } from 'react-router-dom';
 import { RegisterUser } from "../calls/users";
+
 
 
 function Register() {
@@ -20,6 +21,17 @@ const onFinish = async (values)=>{
    message.error(error.message)
   }
 }
+
+const navigate = useNavigate()
+
+
+useEffect(() => {
+  if(localStorage.getItem('token')){
+      navigate("/");
+  }
+} , [])
+
+
   return (
     <>
       <header className="App-header">
