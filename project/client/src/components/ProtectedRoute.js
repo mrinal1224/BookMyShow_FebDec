@@ -5,7 +5,8 @@ import { message, Layout , Menu } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { hideLoading, showLoading } from "../redux/loaderSlice";
 import { Header } from "antd/es/layout/layout";
-import {HomeOutlined , UserOutlined} from "@ant-design/icons"
+import {HomeOutlined , LogoutOutlined, ProfileOutlined, UserOutlined} from "@ant-design/icons"
+import {Link} from "react-router-dom"
 
 function ProtectedRoute({ children }) {
 
@@ -17,7 +18,19 @@ function ProtectedRoute({ children }) {
 
     {
       label : "Profile",
-      icon : <UserOutlined />
+      icon : <UserOutlined />,
+      children: [
+        {
+          label : "My Profile",
+          icon : <ProfileOutlined/>
+        },
+
+        {
+          label : <Link to='/login' onClick={(()=> {localStorage.removeItem('token')})}>Log Out</Link>,
+          icon : <LogoutOutlined/>
+        }
+           
+      ]
     },
 
 ]
