@@ -1,7 +1,12 @@
-import React from 'react'
-import { Table } from 'antd'
+import React , {useState} from 'react'
+import { Button, Table } from 'antd'
+import MovieForm from './MovieForm';
 
 function MovieList() {
+
+    const [isModelOpen , setIsModelOpen] = useState(false)
+
+
 
     const movies = [
         {
@@ -64,9 +69,20 @@ const tableHeadings = [
 
 
   return (
-    <div>
+    <>
+
+      <div className='d-flex justify-content-end'>
+      <Button onClick={()=> {setIsModelOpen(true)}}>Add Movie</Button>
+      </div>
+
+        
         <Table dataSource={movies} columns={tableHeadings}/>
-    </div>
+        {isModelOpen && <MovieForm open={isModelOpen}/>}
+
+
+
+
+    </>
   )
 }
 
