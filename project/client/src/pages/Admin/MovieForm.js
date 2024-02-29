@@ -6,7 +6,7 @@ import { addMovie } from '../../calls/movies';
 
 // import moment from 'moment';
 
-const MovieForm = ({isModalOpen , setIsModalOpen}) => {
+const MovieForm = ({isModalOpen , setIsModalOpen , selectedMovie , setSelectedMovie , formType}) => {
   const dispatch = useDispatch();
 
   const handleChange = (value) => {
@@ -16,6 +16,8 @@ const MovieForm = ({isModalOpen , setIsModalOpen}) => {
 //   if(selectedMovie){
 //     selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format('YYYY-MM-DD')
 //   }
+
+console.log("this is from Form" , selectedMovie)
 
 
 
@@ -67,8 +69,8 @@ const onFinish = async(values)=>{
   // console.log(selectedMovie);
 
     return(
-      <Modal centered  open={isModalOpen} onCancel={handleCancel} width={800} footer={null} >
-        <Form layout='vertical' style={{width: "100%"}} onFinish={onFinish}>
+      <Modal centered title={formType === "add" ? "Add Movie" : "Edit Movie"}  open={isModalOpen} onCancel={handleCancel} width={800} footer={null} >
+        <Form layout='vertical' style={{width: "100%"}} initialValues={selectedMovie} onFinish={onFinish}>
           <Row gutter={{
             xs: 6,
             sm: 10,

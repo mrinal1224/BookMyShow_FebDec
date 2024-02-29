@@ -6,13 +6,20 @@ import { hideLoading, showLoading } from "../../redux/loaderSlice";
 import { getAllMovies } from "../../calls/movies";
 import { useDispatch } from "react-redux";
 import moment from 'moment'
+import {
+    EditOutlined,  DeleteOutlined
+  } from "@ant-design/icons";
 
 function MovieList() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [movies , setMovies] = useState([])
+  const [selectedMovie , setSelectedMovie] = useState(null)
+  const [formType , setFormType] = useState('add')
 
 
   const dispatch = useDispatch()
+
+  console.log(selectedMovie)
 
 
   const getData = async ()=>{
@@ -30,6 +37,7 @@ function MovieList() {
 
 
   }
+
 
  
 
@@ -77,6 +85,18 @@ function MovieList() {
     },
     {
       title: "Action",
+      render : (text , data)=>{
+        return (
+            <div >
+                <Button onClick={()=>{
+                    setIsModalOpen(true)
+                    setSelectedMovie(data)
+                    setFormType('edit')
+                }}><EditOutlined /></Button>
+                <Button><DeleteOutlined/></Button>
+            </div>
+        )
+      }
     },
   ];
 
@@ -90,6 +110,8 @@ function MovieList() {
         <Button
           onClick={() => {
             setIsModalOpen(true);
+            setFormType('add')
+
           }}
         >
           Add Movie
@@ -101,6 +123,8 @@ function MovieList() {
         <MovieForm
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
+          selectedMovie={selectedMovie}
+          
 
         />
       )}
