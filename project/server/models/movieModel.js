@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const movieSchema = new mongoose.Schema({
-    movieName: {
+    title: {
         type: String, 
         required: true    
     },
@@ -21,14 +21,14 @@ const movieSchema = new mongoose.Schema({
         type: String, 
         required: true    
     },
-    // releaseDate: {
-    //     type: Date, 
-    //     required: true    
-    // },
-    // poster: {
-    //     type: String, 
-    //     required: true
-    // },
+    releaseDate: {
+        type: Date, 
+        required: true    
+    },
+    poster: {
+        type: String, 
+        required: true
+    },
 });
 
 const Movies = mongoose.model('movies', movieSchema)

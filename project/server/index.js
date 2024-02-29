@@ -20,9 +20,6 @@ app.use('/api/movies' , movieRoute)
 
 
 
-
-
-
 app.listen(PORT , ()=>{
     console.log("server running")
 })

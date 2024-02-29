@@ -1,14 +1,74 @@
 import { Col, Modal, Row, Form,  Input, Select, Button, message} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
-import React from 'react'
+import { showLoading, hideLoading } from '../../redux/loaderSlice';
+import { useDispatch } from 'react-redux';
+import { addMovie } from '../../calls/movies';
+
+// import moment from 'moment';
+
+const MovieForm = ({isModalOpen , setIsModalOpen}) => {
+  const dispatch = useDispatch();
+
+  const handleChange = (value) => {
+    console.log(`selected ${value}`);
+  }
+
+//   if(selectedMovie){
+//     selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format('YYYY-MM-DD')
+//   }
 
 
 
-function MovieForm() {
-  return (
-    <div>
+
+const onFinish = async(values)=>{
+  try {
+
+    dispatch(showLoading())
     
-       <Form layout='vertical' style={{width: "100%"}} >
+  const response = await addMovie(values)
+
+    dispatch(hideLoading())
+
+    if(response.success){
+      message.success(response.message);
+    }else{
+      message.error(response.message)
+    }
+    
+  } catch (error) {
+    message.error(error.message);
+  }
+}
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // const handleOk = () => {
+  //   setIsModalOpen(false); onOk={handleOk}
+  // }
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+    // setSelectedMovie(null);
+  }
+
+  // console.log(selectedMovie);
+
+    return(
+      <Modal centered  open={isModalOpen} onCancel={handleCancel} width={800} footer={null} >
+        <Form layout='vertical' style={{width: "100%"}} onFinish={onFinish}>
           <Row gutter={{
             xs: 6,
             sm: 10,
@@ -39,7 +99,7 @@ function MovieForm() {
               </Col>
               <Col span={8}>
                 <Form.Item  label="Select Movie Lanuage" htmlFor='language' name="language" className='d-block' rules={[{required: true, message: "Movie language  is required!"}]}>
-                <Select id="language" defaultValue="Select Language" style={{ width: "100%", height: "45px" }}  options={[
+                <Select id="language" defaultValue="Select Language" style={{ width: "100%", height: "45px" }} onChange={handleChange} options={[
                   { value: 'English', label: 'English' },
                   { value: 'Hindi', label: 'Hindi' },
                   { value: 'Punjabi', label: 'Punjabi' },
@@ -65,7 +125,7 @@ function MovieForm() {
               }}>
                 <Col span={8}>
                   <Form.Item  label="Select Movie Genre" htmlFor='genre' name="genre" className='d-block' rules={[{required: true, message: "Movie genre  is required!"}]}>
-                    <Select defaultValue="Select Movie" style={{ width: "100%" }}  options={[
+                    <Select defaultValue="Select Movie" style={{ width: "100%" }} onChange={handleChange} options={[
                       { value: 'Action', label: 'Action' },
                       { value: 'Comedy', label: 'Comedy' },
                       { value: 'Horror', label: 'Horror' },
@@ -87,11 +147,10 @@ function MovieForm() {
           </Row>          
           <Form.Item>
               <Button block type="primary" htmlType='submit' style={{fontSize: "1rem", fontWeight: "600"}}>Submit the Data</Button>
-              <Button className='mt-3' block >Cancel</Button>
+              <Button className='mt-3' block onClick={handleCancel}>Cancel</Button>
           </Form.Item>
       </Form>
-    </div>
-  )
+      </Modal>
+    )
 }
-
-export default MovieForm
+export default MovieForm;

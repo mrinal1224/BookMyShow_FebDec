@@ -1,89 +1,95 @@
-import React , {useState} from 'react'
-import { Button, Table } from 'antd'
-import MovieForm from './MovieForm';
+import React, { useEffect, useState } from "react";
+
+import { Button, Table } from "antd";
+import MovieForm from "./MovieForm";
+import { hideLoading, showLoading } from "../../redux/loaderSlice";
+import { getAllMovies } from "../../calls/movies";
+import { useDispatch } from "react-redux";
+import moment from 'moment'
 
 function MovieList() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [movies , setMovies] = useState([])
 
-    const [isModelOpen , setIsModelOpen] = useState(false)
+
+  const dispatch = useDispatch()
+  const getData = async ()=>{
+     dispatch(showLoading())
+
+     const response = await getAllMovies()
+
+     setMovies(response.data)
+     dispatch(hideLoading())
 
 
+  }
 
-    const movies = [
-        {
-          key: '1',
-          poster: 'Image1',
-          name: 'Mastaney',
-          description: 'Set in 1739, Nadar Shah`s undefeated army was attacked by Sikh Rebellions. ',
-          duration: 120,
-          genre: "Action",
-          language: "Hindi",
-          releaseDate: "Oct  25, 2023",
-        },
-        {
-          key: '2',
-          poster: 'Image2',
-          name: 'Mastaney',
-          description: 'Set in 1739, Nadar Shah`s undefeated army was attacked by Sikh Rebellions. ',
-          duration: 120,
-          genre: "Action",
-          language: "Hindi",
-          releaseDate: "Oct  25, 2023",
-          action: "Delete"
-        },
-        
-      ]; 
-    
- 
-const tableHeadings = [
-    {
-        title : "Poster"
-    },
-    {
-        title : "Movie Name",
-        dataIndex : 'name'
-    },
-    {
-        title : "Description",
-        dataIndex : 'description'
-    },
-    {
-        title : "Duration",
-        dataIndex: 'duration',
-    },
-    {
-        title : "Genre",
-        dataIndex: 'genre',
-    },
-    {
-        title : "Language",
-        dataIndex: 'language'
-    },
-    {
-        title : "Release Date",
-        dataIndex: 'releaseDate'
-    },
-    {
-        title : "Action"
-    },
-]
 
+  
+
+  const tableHeadings = [
+    {
+      title: "Poster",
+    },
+    {
+      title: "Movie Name",
+      dataIndex: "title",
+    },
+    {
+      title: "Description",
+      dataIndex: "description",
+    },
+    {
+      title: "Duration",
+      dataIndex: "duration",
+    },
+    {
+      title: "Genre",
+      dataIndex: "genre",
+    },
+    {
+      title: "Language",
+      dataIndex: "language",
+    },
+    {
+      title: "Release Date",
+      dataIndex: "releaseDate",
+      render : (data)=>{
+        return moment(data.releaseDate).format("MM-DD-YYYY");
+      }
+
+    },
+    {
+      title: "Action",
+    },
+  ];
+
+  useEffect(()=>{
+    getData()
+  } , [])
 
   return (
     <>
-
-      <div className='d-flex justify-content-end'>
-      <Button onClick={()=> {setIsModelOpen(true)}}>Add Movie</Button>
+      <div className="d-flex justify-content-end">
+        <Button
+          onClick={() => {
+            setIsModalOpen(true);
+          }}
+        >
+          Add Movie
+        </Button>
       </div>
 
-        
-        <Table dataSource={movies} columns={tableHeadings}/>
-        {isModelOpen && <MovieForm open={isModelOpen}/>}
+      <Table dataSource={movies} columns={tableHeadings} />
+      {isModalOpen && (
+        <MovieForm
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
 
-
-
-
+        />
+      )}
     </>
-  )
+  );
 }
 
-export default MovieList
+export default MovieList;
