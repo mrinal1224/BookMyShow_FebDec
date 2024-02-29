@@ -13,16 +13,25 @@ function MovieList() {
 
 
   const dispatch = useDispatch()
+
+
   const getData = async ()=>{
      dispatch(showLoading())
 
      const response = await getAllMovies()
 
-     setMovies(response.data)
+     const allMovies = response.data
+
+     setMovies(allMovies.map(function(item){
+        return {...item , key: `movie${item._id}`}
+     }))
+     console.log(movies)
      dispatch(hideLoading())
 
 
   }
+
+ 
 
 
   
@@ -30,6 +39,10 @@ function MovieList() {
   const tableHeadings = [
     {
       title: "Poster",
+      dataIndex : 'poster',
+      render : (text , data)=>{
+        return (<img width='75' height='115' style={{objectFit:'cover'}} src={data.poster}/>)  
+      }
     },
     {
       title: "Movie Name",
@@ -42,6 +55,9 @@ function MovieList() {
     {
       title: "Duration",
       dataIndex: "duration",
+      render : (text)=>{
+        return `${text} Min`
+      }
     },
     {
       title: "Genre",
@@ -54,7 +70,7 @@ function MovieList() {
     {
       title: "Release Date",
       dataIndex: "releaseDate",
-      render : (data)=>{
+      render : (text , data)=>{
         return moment(data.releaseDate).format("MM-DD-YYYY");
       }
 
