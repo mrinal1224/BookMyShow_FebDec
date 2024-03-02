@@ -10,8 +10,9 @@ const DeleteMovieModal = ({isDeleteModalOpen, setIsDeleteModalOpen, selectedMovi
             dispatch(showLoading);
             const movieId = selectedMovie._id;
             const response = await deleteMovie({ movieId });
-            console.log(movieId, response);
+          
             if(response.success){
+              console.log("id and respone ->  " , movieId, response);
                 message.success(response.message);
                 getData();
             }else{

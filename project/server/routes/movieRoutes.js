@@ -76,6 +76,9 @@ router.put('/delete-movie', async (req, res) => {
 })
 
 
+//APi end 
+
+
 // update the movie , delete the movie , get all the movies
 
 
