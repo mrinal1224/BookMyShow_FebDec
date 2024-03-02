@@ -16,7 +16,7 @@ const MovieForm = ({isModalOpen , setIsModalOpen , selectedMovie , setSelectedMo
 
   if(selectedMovie){
     selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format('YYYY-MM-DD')
-    
+
   }
 
 console.log("this is from Form" , selectedMovie)
@@ -30,8 +30,10 @@ const onFinish = async (values)  => {
     let response = null;
     if(formType === "add"){
       response = await addMovie(values);
+      setSelectedMovie(null);
     }else{
       response = await updateMovie({...values, movieId: selectedMovie._id});
+      setSelectedMovie(null);
     }
     console.log(response);
     if(response.success){
