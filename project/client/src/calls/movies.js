@@ -26,3 +26,23 @@ export const addMovie = async (values)=> {
     }
     
 }
+
+
+export const updateMovie = async (payload) => {
+    try{
+        const response = await axiosInstance.put('/api/movies/update-movie', payload);
+        return response.data;
+    }catch(err){
+        return err.message
+    }
+}
+
+// Delete a movie
+export const deleteMovie = async (payload) => {
+    try{
+        const response = await axiosInstance.put('/api/movies/delete-movie', payload);
+        return response.data;
+    }catch(err){
+        return err.message
+    }
+}

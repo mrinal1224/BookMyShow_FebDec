@@ -2,43 +2,49 @@ import { Col, Modal, Row, Form,  Input, Select, Button, message} from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import { showLoading, hideLoading } from '../../redux/loaderSlice';
 import { useDispatch } from 'react-redux';
-import { addMovie } from '../../calls/movies';
+import { addMovie ,updateMovie} from '../../calls/movies';
+import moment from 'moment'
 
 // import moment from 'moment';
 
-const MovieForm = ({isModalOpen , setIsModalOpen , selectedMovie , setSelectedMovie , formType}) => {
+const MovieForm = ({isModalOpen , setIsModalOpen , selectedMovie , setSelectedMovie, formType , getData}) => {
   const dispatch = useDispatch();
 
   const handleChange = (value) => {
     console.log(`selected ${value}`);
   }
 
-//   if(selectedMovie){
-//     selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format('YYYY-MM-DD')
-//   }
+  if(selectedMovie){
+    selectedMovie.releaseDate = moment(selectedMovie.releaseDate).format('YYYY-MM-DD')
+    
+  }
 
 console.log("this is from Form" , selectedMovie)
 
 
 
 
-const onFinish = async(values)=>{
-  try {
-
-    dispatch(showLoading())
-    
-  const response = await addMovie(values)
-
-    dispatch(hideLoading())
-
+const onFinish = async (values)  => {
+  try{
+    dispatch(showLoading());
+    let response = null;
+    if(formType === "add"){
+      response = await addMovie(values);
+    }else{
+      response = await updateMovie({...values, movieId: selectedMovie._id});
+    }
+    console.log(response);
     if(response.success){
+      getData();
       message.success(response.message);
+      setIsModalOpen(false);
     }else{
       message.error(response.message)
     }
-    
-  } catch (error) {
-    message.error(error.message);
+    dispatch(hideLoading());     
+  }catch(err){
+    dispatch(hideLoading());
+    message.error(err.message);
   }
 }
 
@@ -63,13 +69,13 @@ const onFinish = async(values)=>{
 
   const handleCancel = () => {
     setIsModalOpen(false);
-    // setSelectedMovie(null);
+    setSelectedMovie(null);
   }
 
   // console.log(selectedMovie);
 
     return(
-      <Modal centered title={formType === "add" ? "Add Movie" : "Edit Movie"}  open={isModalOpen} onCancel={handleCancel} width={800} footer={null} >
+      <Modal centered title={formType === "add" ? "Add Movie" : "Edit Movie"}  open={isModalOpen} onCancel={handleCancel} width={800} footer={null} formType={formType} >
         <Form layout='vertical' style={{width: "100%"}} initialValues={selectedMovie} onFinish={onFinish}>
           <Row gutter={{
             xs: 6,

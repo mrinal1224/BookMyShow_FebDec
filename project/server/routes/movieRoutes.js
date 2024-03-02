@@ -42,25 +42,38 @@ router.get('/get-all-movies' , async(req , res)=>{
 
 // Update a movie
 
-// router.put('/update-movie/:id' , async(req , res)=>{
-//     try {
+// Update a movie
+router.put('/update-movie', async (req, res) => {
+    try{
+        const movie = await Movie.findByIdAndUpdate(req.body.movieId, req.body);
+        res.send({
+            success: true,
+            message: 'The movie has been updated!',
+            data: movie
+        })
+    }catch(err){
+        res.send({
+            success: false,
+            message: err.message
+        })
+    }
+});
 
-//          const movie = await Movie.findByIdAndUpdate(req.params.id)
-//          console.log(req.params.id)
-//          res.send({
-//             success: true,
-//             message: 'The movie has been updated!',
-//             data: movie
-//         })
-
-        
-//     } catch (error) {
-//         res.send({
-//             success: false,
-//             message: error.message
-//         })
-//     }
-// })
+router.put('/delete-movie', async (req, res) => {
+    try{
+        await Movie.findByIdAndDelete(req.body.movieId);
+        console.log(req.body.movieId);
+        res.send({
+            success: true,
+            message: 'The movie has been deleted!',
+        });
+    }catch(err){
+        res.send({
+            success: false,
+            message: err.message
+        });
+    }
+})
 
 
 // update the movie , delete the movie , get all the movies

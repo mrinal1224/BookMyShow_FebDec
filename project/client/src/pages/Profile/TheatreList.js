@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Button, message} from 'antd';
-
+import TheatreFormModal from './TheatreFormModal';
+import DeleteTheatreModal from './DeleteTheatreModal';
 import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
 import { getAllTheatres } from '../../calls/theatres';
 import { useSelector, useDispatch } from 'react-redux';
 import { showLoading, hideLoading } from '../../redux/loaderSlice';
 
 
-const TheatresTable = () => {
+const TheatreList = () => {
     const { user } = useSelector( (state) => state.user );
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -93,11 +94,19 @@ const TheatresTable = () => {
 
     return(
         <>
-    
+        <div className='d-flex justify-content-end'>
+            <Button type="primary" onClick={() => { setIsModalOpen(true); setFormType("add") }}>Add Theatre</Button>
+        </div>   
         <Table dataSource={theatres} columns={columns} />
-       
+        { isModalOpen && <TheatreFormModal isModalOpen={isModalOpen} selectedTheatre={selectedTheatre} setSelectedTheatre={setSelectedTheatre} setIsModalOpen={setIsModalOpen} formType={formType} getData={getData} /> }
+        { 
+            isDeleteModalOpen && <DeleteTheatreModal isDeleteModalOpen={isDeleteModalOpen} selectedTheatre={selectedTheatre} setIsDeleteModalOpen={setIsDeleteModalOpen} setSelectedTheatre={setSelectedTheatre} getData={getData} /> 
+        }
+        {/* {
+          isShowModalOpen && <ShowModal isShowModalOpen={isShowModalOpen} setIsShowModalOpen={setIsShowModalOpen} selectedTheatre={selectedTheatre}/>
+        } */}
         </>
     );
 }
 
-export default TheatresTable;
+export default TheatreList;
