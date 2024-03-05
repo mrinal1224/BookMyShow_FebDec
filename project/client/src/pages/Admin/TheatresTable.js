@@ -1,34 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { Table, Button, message} from 'antd';
-
-import { EditOutlined, DeleteOutlined } from '@ant-design/icons';
-import { getAllTheatres } from '../../calls/theatres';
-import { useSelector, useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { getAllTheatresForAdmin, updateTheatre } from '../../calls/theatres';
 import { showLoading, hideLoading } from '../../redux/loaderSlice';
-
+import { useDispatch } from 'react-redux';
+import { message, Button, Table } from 'antd';
 
 const TheatresTable = () => {
-    const { user } = useSelector( (state) => state.user );
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    // const [isShowModalOpen, setIsShowModalOpen] = useState(false);
-    const [selectedTheatre, setSelectedTheatre] = useState(null);
-    const [formType, setFormType] = useState("add"); 
-    const [theatres, setTheatres] = useState(null);
+    const [theatres, setTheatres] = useState([]);
     const dispatch = useDispatch();
 
     const getData = async () => {
         try{
           dispatch(showLoading());
-          const response = await getAllTheatres({ owner: user._id });
+          const response = await getAllTheatresForAdmin();
           if(response.success){
             const allTheatres = response.data;
-            // console.log(allTheatres);
             setTheatres(
-                allTheatres.map(function(item){
+              allTheatres.map(function(item){
                 return {...item, key: `theatre${item._id}`}
               })
-            );
+              );
           }else{
             message.error(response.message)
           }
@@ -36,6 +26,23 @@ const TheatresTable = () => {
   
         }catch(err){
           dispatch(hideLoading());
+          message.error(err.message);
+        }
+      }
+
+      const handleStatusChange = async (theatre) => {
+        try{
+          dispatch(showLoading);
+          let values = {...theatres, theatreId: theatre._id, isActive: !theatre.isActive}
+          const response = await updateTheatre(values);
+          console.log(response, theatre);
+          if(response.success){
+            message.success(response.message);
+            getData();
+          }
+          dispatch(hideLoading);
+        }catch(err){
+          dispatch(hideLoading);
           message.error(err.message);
         }
       }
@@ -52,6 +59,13 @@ const TheatresTable = () => {
           key: 'address',
         },
         {
+            title: 'Owner',
+            dataIndex: 'owner',
+            render: (text, data) => {
+                return data.owner && data.owner.name;
+            }
+        },
+        {
           title: 'Phone Number',
           dataIndex: 'phone',
           key: 'phone',
@@ -66,9 +80,9 @@ const TheatresTable = () => {
           dataIndex: 'status',
           render: (status, data) => {
             if(data.isActive){
-                return `Approved`
+                return 'Approved'
             }else{
-                return `Pending/ Blocked`
+                return 'Pending/ Blocked'
             }
           }
         },
@@ -78,9 +92,7 @@ const TheatresTable = () => {
           render: (text, data) => {
             return(
               <div className='d-flex align-items-center gap-10'>
-                <Button onClick={() => { setIsModalOpen(true); setFormType("edit"); setSelectedTheatre(data) }}><EditOutlined/></Button>
-                <Button onClick={ () => { setIsDeleteModalOpen(true); setSelectedTheatre(data); }}><DeleteOutlined/></Button>
-                {/* { data.isActive && <Button onClick={ () => { setIsShowModalOpen(true); setSelectedTheatre(data); }}>+ Shows</Button> } */}
+                { data.isActive ? <Button onClick={() => handleStatusChange(data)}>Block</Button> : <Button onClick={() => handleStatusChange(data)}>Approve</Button>  }
               </div>
             )
           }
@@ -89,15 +101,15 @@ const TheatresTable = () => {
 
       useEffect(() => {
         getData();
-      }, [])
+      }, []);
+
+      // console.log(theatres.length > 0 && theatres);
 
     return(
-        <>
-    
-        <Table dataSource={theatres} columns={columns} />
-       
-        </>
-    );
+      <>
+        {theatres && theatres.length > 0 && <Table dataSource={theatres} columns={columns} />}
+      </>
+    )
 }
 
 export default TheatresTable;

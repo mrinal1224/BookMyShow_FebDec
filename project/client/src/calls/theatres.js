@@ -9,6 +9,16 @@ export const addTheatre = async (payload) => {
     }
 }
 
+// Get all theatres for the Admin route
+export const getAllTheatresForAdmin = async () => {
+    try{
+        const response = await axiosInstance.get('/api/theatres/get-all-theatres');
+        return response.data;
+    }catch(err){
+        return err.response;
+    }
+}
+
 // Get theatres of a specific owner
 export const getAllTheatres = async (payload) => {
     try{
@@ -22,7 +32,7 @@ export const getAllTheatres = async (payload) => {
 // Update Theatre
 export const updateTheatre = async (payload) => {
     try{
-        const response = await axiosInstance.post('/api/theatres/update-theatre', payload);
+        const response = await axiosInstance.put('/api/theatres/update-theatre', payload);
         return response.data;
     }catch(err){
         return err.resposne;
@@ -39,12 +49,3 @@ export const deleteTheatre = async (payload) => {
     }
 }
 
-// Get all theatres for the Admin route
-// export const getAllTheatresForAdmin = async () => {
-//     try{
-//         const response = await axiosInstance.get('/api/theatres/get-all-theatres');
-//         return response.data;
-//     }catch(err){
-//         return err.response;
-//     }
-// }
