@@ -21,6 +21,7 @@ const BookShow = () => {
             if(response.success){
                 setShow(response.data);
                 // message.success(response.message);
+                console.log(response.data)
             }else{
                 message.error(response.message)
             }
@@ -33,8 +34,8 @@ const BookShow = () => {
 
     const getSeats = () => {
         let columns = 12;
-        let totalSeats = show.totalSeats;
-        let rows = totalSeats / columns;
+        let totalSeats = 120;
+        let rows = totalSeats / columns; // 10
 
         return(
             <div className="d-flex flex-column align-items-center">
@@ -44,10 +45,12 @@ const BookShow = () => {
                     </div>
                 </div>
                 <ul className="seat-ul justify-content-center">
-                    { Array.from(Array(rows).keys()).map((seat) => 
+                    { Array.from(Array(rows).keys()).map((row) => 
                         { return (Array.from(Array(columns).keys()).map((column) => {
-                            let seatNumber = seat * columns + column + 1;
+                            let seatNumber = row * columns + column + 1;
 
+                     
+                         // this part
 
 
 
