@@ -50,7 +50,7 @@ function App() {
           />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          {/* <Route path="/movie/:id" element={<ProtectedRoute><SingleMovie/></ProtectedRoute>} /> */}
+          <Route path="/movie/:id" element={<ProtectedRoute><SingleMovie/></ProtectedRoute>} />
           {/* <Route path="/book-show/:id" element={<ProtectedRoute><BookShow/></ProtectedRoute>} /> */}
         </Routes>
       </BrowserRouter>

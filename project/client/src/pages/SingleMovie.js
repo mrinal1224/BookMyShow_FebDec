@@ -26,6 +26,7 @@ const SingleMovie = () => {
             const response = await getMovieById(params.id);
             if(response.success){
                 setMovie(response.data)
+                console.log(response.data)
             }else{
                 message.error(response.message)
             }
