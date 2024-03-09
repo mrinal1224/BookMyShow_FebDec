@@ -91,7 +91,6 @@ const SingleMovie = () => {
                 <Input
                   onChange={handleDate}
                   type="date"
-                  min={moment().format("YYYY-MM-DD")}
                   className="max-width-300 mt-8px-mob"
                   value={date}
                   placeholder="default size"
