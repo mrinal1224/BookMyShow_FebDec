@@ -1,36 +1,30 @@
 import React, { useEffect } from "react";
-import {Form, Input, Button, Radio, message } from 'antd';
-import { Link, useNavigate } from 'react-router-dom';
+import { Form, Input, Button, Radio, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
 import { RegisterUser } from "../calls/users";
 
-
-
 function Register() {
-
-const onFinish = async (values)=>{
-  console.log(values)
-  try {
-    const response = await RegisterUser(values)
-    if(response.success){
-     message.success(response.message)
+  const onFinish = async (values) => {
+    console.log(values);
+    try {
+      const response = await RegisterUser(values);
+      if (response.success) {
+        message.success(response.message);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message);
     }
-    else{
-     message.error(response.message)
-    }
-  } catch (error) {
-   message.error(error.message)
-  }
-}
+  };
 
-const navigate = useNavigate()
+  const navigate = useNavigate();
 
-
-useEffect(() => {
-  if(localStorage.getItem('token')){
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
       navigate("/");
-  }
-} , [])
-
+    }
+  }, []);
 
   return (
     <>
@@ -81,7 +75,6 @@ useEffect(() => {
                   placeholder="Enter the password"
                 ></Input>
               </Form.Item>
-    
 
               <Form.Item>
                 <Button
@@ -92,6 +85,24 @@ useEffect(() => {
                 >
                   Sign Up
                 </Button>
+              </Form.Item>
+              <Form.Item
+                label="Register as a Partner"
+                htmlFor="role"
+                name="role"
+                className="d-block text-center"
+                initialValue={false}
+                rules={[{ required: true, message: "Please select an option!" }]}
+              >
+                <div className="d-flex justify-content-start">
+                  <Radio.Group
+                    name="radiogroup"
+                    className="flex-start"
+                  >
+                    <Radio value={'partner'}>Yes</Radio>
+                    <Radio value={'user'}>No</Radio>
+                  </Radio.Group>
+                </div>
               </Form.Item>
             </Form>
             <div>
