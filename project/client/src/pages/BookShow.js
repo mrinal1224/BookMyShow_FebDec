@@ -152,7 +152,7 @@ const BookShow = () => {
       if (response.success) {
         message.success(response.message);
         book(response.data);
-        // console.log(response);
+         console.log(response);
       } else {
         message.error(response.message);
       }
@@ -163,9 +163,8 @@ const BookShow = () => {
     }
   };
 
-  // const onToken=(token)=>{
-  //  console.log(token)
-  // }
+
+
 
   useEffect(() => {
     getData();
@@ -212,8 +211,9 @@ const BookShow = () => {
               {selectedSeats.length > 0 && (
                 <StripeCheckout
                   token={onToken}
-                  billingAddress
-                  amount={selectedSeats.length * show.ticketPrice * 100}
+                  amount={selectedSeats.length * show.ticketPrice*100}
+            
+        
                   stripeKey="pk_test_51JKPQWSJULHQ0FL7VOkMrOMFh0AHMoCFit29EgNlVRSvFkDxSoIuY771mqGczvd6bdTHU1EkhJpojOflzoIFGmj300Uj4ALqXa"
                 >
                   {/* Use this one in some situation=> pk_test_eTH82XLklCU1LJBkr2cSDiGL001Bew71X8  */}

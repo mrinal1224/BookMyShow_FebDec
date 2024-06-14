@@ -46,7 +46,7 @@ const Bookings = () => {
                                 <p>Theatre: <b>{booking.show.theatre.name}</b></p>
                                 <p>Seats: <b>{booking.seats.join(", ")}</b></p>
                                 <p>Date & Time: <b>{moment(booking.show.date).format("MMM Do YYYY")} {moment(booking.show.time, "HH:mm").format("hh:mm A")}</b>  </p>
-                                <p>Amount: <b>Rs.{booking.show.bookedSeats.length * booking.show.ticketPrice}/- </b></p>
+                                <p>Amount: <b>Rs.{booking.show.bookedSeats.length * booking.show.ticketPrice} </b></p>
                                 <p>Booking ID: <b>{booking.transactionId} </b></p>
                             </div>
                         </div>

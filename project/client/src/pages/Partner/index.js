@@ -1,16 +1,18 @@
 import { Tabs } from 'antd';
-import Bookings from './Bookings';
+import TheatreList from './TheatreList';
 
-const Profile = () => {
+
+const Partner = () => {
     // const onChange = (key) => {
     //     console.log(key);
     //   };
       const items = [
         {
           key: '1',
-          label: 'Bookings',
-          children: <Bookings/>,
-        },
+          label: 'Theatres',
+          children: <TheatreList/>,
+        }
+        
         // {
         //   key: '3',
         //   label: 'Tab 3',
@@ -20,10 +22,10 @@ const Profile = () => {
 
     return (
         <>
-        <h1>User Profile Page</h1>
+        <h1>Partner Page</h1>
             <Tabs defaultActiveKey="2" items={items} />
         </>
     )
 }
 
-export default Profile;
+export default Partner;

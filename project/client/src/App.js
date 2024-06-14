@@ -10,6 +10,7 @@ import Profile from "./pages/Profile";
 import Admin from "./pages/Admin";
 import BookShow from "./pages/BookShow";
 import SingleMovie from "./pages/SingleMovie";
+import Partner from "./pages/Partner";
 
 function App() {
   const { loading } = useSelector((state) => state.loader);
@@ -45,6 +46,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Profile />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/partner"
+            element={
+              <ProtectedRoute>
+                <Partner />
               </ProtectedRoute>
             }
           />
